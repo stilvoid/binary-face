@@ -1,0 +1,25 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "Stefan",
+    "longName": "Binary Clock",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "images/Binary_Clock.png",
+                "name": "IMAGE_MENU_ICON",
+                "type": "png"
+            }
+        ]
+    },
+    "shortName": "BCD Clock",
+    "uuid": "5a688c87-051d-4729-ac7a-dc0acf9ae9e1",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": true
+    }
+}
