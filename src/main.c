@@ -47,36 +47,31 @@ void draw_cell(GContext* ctx, GPoint center, bool filled) {
 
 
 GPoint get_center_point_from_cell_location(unsigned short x, unsigned short y) {
-  // Cell location (0,0) is upper left, location (4, 6) is lower right.
-  return GPoint(-24 + (CELL_SIZE/2) + (CELL_SIZE * x), 18 + (CELL_SIZE/2) + (CELL_SIZE * y));
+  // Cell location (0,0) is upper left, location (4, 4) is lower right.
+  return GPoint(SIDE_PADDING + (CELL_SIZE/2) + (CELL_SIZE * x), 8 + SIDE_PADDING + (CELL_SIZE/2) + (CELL_SIZE * y));
 }
 
-void draw_cell_row_for_digit(GContext* ctx, unsigned short digit, unsigned short max_columns_to_display, unsigned short cell_row) {
+void draw_cell_column_for_digit(GContext* ctx, unsigned short digit, unsigned short cell_column) {
   // Converts the supplied decimal digit into Binary Coded Decimal form and
-  // then draws a row of cells on screen--'1' binary values are filled, '0' binary values are not filled.
-  // `max_columns_to_display` restricts how many binary digits are shown in the row.
-  for (int cell_column_index = CELLS_PER_ROW; cell_column_index > 0; cell_column_index--) {
-    draw_cell(ctx, get_center_point_from_cell_location(cell_column_index, cell_row), (digit >> (CELLS_PER_ROW - cell_column_index)) & 0x1);
+  // then draws a column of cells on screen--'1' binary values are filled, '0' binary values are not filled.
+  for (int cell_row_index = 0; cell_row_index < CELLS_PER_COLUMN; cell_row_index++) {
+    draw_cell(ctx, get_center_point_from_cell_location(cell_column, cell_row_index), (digit >> (CELLS_PER_COLUMN - cell_row_index - 1)) & 0x1);
   }
 }
 
 
 // The cell row offsets for each digit
-#define HOURS_FIRST_DIGIT_ROW 0
-#define HOURS_SECOND_DIGIT_ROW 1
-#define MINUTES_FIRST_DIGIT_ROW 2
-#define MINUTES_SECOND_DIGIT_ROW 3
-//#define SECONDS_FIRST_DIGIT_ROW 4
-//#define SECONDS_SECOND_DIGIT_ROW 5
+#define HOURS_FIRST_DIGIT_COLUMN 0
+#define HOURS_SECOND_DIGIT_COLUMN 1
+#define MINUTES_FIRST_DIGIT_COLUMN 2
+#define MINUTES_SECOND_DIGIT_COLUMN 3
 
-// The maximum number of cell columns to display
+// The maximum number of cell rows to display
 // (Used so that if a binary digit can never be 1 then no un-filled
 // placeholder is shown.)
-#define DEFAULT_MAX_COLS 4
-#define HOURS_FIRST_DIGIT_MAX_COLS 2
-#define MINUTES_FIRST_DIGIT_MAX_COLS 3
-//#define SECONDS_FIRST_DIGIT_MAX_COLS 3
-
+#define DEFAULT_MAX_ROWS 4
+#define HOURS_FIRST_DIGIT_MAX_ROWS 2
+#define MINUTES_FIRST_DIGIT_MAX_ROWS 3
 
 unsigned short get_display_hour(unsigned short hour) {
 
@@ -99,15 +94,11 @@ void display_layer_update_callback(Layer *me, GContext* ctx) {
 
   unsigned short display_hour = get_display_hour(t->tm_hour);
 
-  draw_cell_row_for_digit(ctx, display_hour / 10, DEFAULT_MAX_COLS, HOURS_FIRST_DIGIT_ROW);
-  draw_cell_row_for_digit(ctx, display_hour % 10, DEFAULT_MAX_COLS, HOURS_SECOND_DIGIT_ROW);
+  draw_cell_column_for_digit(ctx, display_hour / 10, HOURS_FIRST_DIGIT_COLUMN);
+  draw_cell_column_for_digit(ctx, display_hour % 10, HOURS_SECOND_DIGIT_COLUMN);
 
-  draw_cell_row_for_digit(ctx, t->tm_min / 10, DEFAULT_MAX_COLS, MINUTES_FIRST_DIGIT_ROW);
-  draw_cell_row_for_digit(ctx, t->tm_min % 10, DEFAULT_MAX_COLS, MINUTES_SECOND_DIGIT_ROW);
-
-//  draw_cell_row_for_digit(ctx, t->tm_sec / 10, DEFAULT_MAX_COLS, SECONDS_FIRST_DIGIT_ROW);
-//  draw_cell_row_for_digit(ctx, t->tm_sec % 10, DEFAULT_MAX_COLS, SECONDS_SECOND_DIGIT_ROW);
-
+  draw_cell_column_for_digit(ctx, t->tm_min / 10, MINUTES_FIRST_DIGIT_COLUMN);
+  draw_cell_column_for_digit(ctx, t->tm_min % 10, MINUTES_SECOND_DIGIT_COLUMN);
 }
 
 void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed) {
@@ -143,4 +134,3 @@ int main(void) {
   app_event_loop();
   do_deinit();
 }
-
