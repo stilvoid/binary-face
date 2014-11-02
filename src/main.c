@@ -41,6 +41,7 @@ void draw_cell(GContext* ctx, GPoint center, bool filled) {
 #define CIRCLE_PADDING 16 - CIRCLE_RADIUS // Number of padding pixels on each side
 #define CELL_SIZE (2 * (CIRCLE_RADIUS + CIRCLE_PADDING)) // One "cell" is the square that contains the circle.
 #define SIDE_PADDING (144 - (4 * CELL_SIZE))/2
+#define TOP_PADDING (168 - (4 * CELL_SIZE))/2
 
 #define CELLS_PER_ROW 4
 #define CELLS_PER_COLUMN 4
@@ -48,7 +49,7 @@ void draw_cell(GContext* ctx, GPoint center, bool filled) {
 
 GPoint get_center_point_from_cell_location(unsigned short x, unsigned short y) {
   // Cell location (0,0) is upper left, location (4, 4) is lower right.
-  return GPoint(SIDE_PADDING + (CELL_SIZE/2) + (CELL_SIZE * x), 8 + SIDE_PADDING + (CELL_SIZE/2) + (CELL_SIZE * y));
+  return GPoint(SIDE_PADDING + (CELL_SIZE/2) + (CELL_SIZE * x), TOP_PADDING + (CELL_SIZE/2) + (CELL_SIZE * y));
 }
 
 void draw_cell_column_for_digit(GContext* ctx, unsigned short digit, unsigned short cell_column) {
