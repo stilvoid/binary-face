@@ -1,15 +1,13 @@
 {
     "appKeys": {},
-    "capabilities": [
-        ""
-    ],
+    "capabilities": [],
     "companyName": "Stilvoid",
     "longName": "Left-to-right BCD Clock",
     "projectType": "native",
     "resources": {
         "media": [
             {
-                "file": "images/Binary_Clock.png",
+                "file": "images/menu-icon.png",
                 "menuIcon": true,
                 "name": "IMAGE_MENU_ICON",
                 "type": "png"
